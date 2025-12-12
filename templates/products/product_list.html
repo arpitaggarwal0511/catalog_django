@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Products (demo)</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+  <h1>Products</h1>
+    <form method="get" style="margin-bottom:12px">
+  <input type="text" name="q" placeholder="search name/description" value="{{ request.GET.q|default:'' }}">
+  <select name="size">
+    <option value="">All sizes</option>
+    <option value="XS" {% if request.GET.size == 'XS' %}selected{% endif %}>XS</option>
+    <option value="S"  {% if request.GET.size == 'S' %}selected{% endif %}>S</option>
+    <option value="M"  {% if request.GET.size == 'M' %}selected{% endif %}>M</option>
+    <option value="L"  {% if request.GET.size == 'L' %}selected{% endif %}>L</option>
+    <option value="XL" {% if request.GET.size == 'XL' %}selected{% endif %}>XL</option>
+  </select>
+  <button type="submit">Apply</button>
+  <a href="{% url 'products:product_list' %}">Reset</a>
+</form>
+
+  <ul>
+    {% for p in products %}
+      <li>{{ p.name }} — ₹{{ p.price }} — ⭐{{ p.rating }}</li>
+    {% empty %}
+      <li>No products yet.</li>
+    {% endfor %}
+  </ul>
+
+  <p><a href="/admin/">Open admin</a> to add products</p>
+</body>
+</html>
