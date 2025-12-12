@@ -166,11 +166,15 @@ This JSON is used by the “Details” popup on the product listing page.
 ## 🖼 Screenshots
 
 
-
+This is admin page
 ![Admin Page](https://github.com/user-attachments/assets/33892a1c-bd7f-4f40-8c7a-fa1ec2247d9d)
-![Product Add](https://github.com/user-attachments/assets/3e006f7c-84c3-4262-bf6f-3fad869c244b)
+This is admin page for adding products
+![Admin Product Add](https://github.com/user-attachments/assets/3e006f7c-84c3-4262-bf6f-3fad869c244b)
+This is admin page for product details
 ![Product Details](https://github.com/user-attachments/assets/fa4cddf6-c514-419f-9602-0cdc429d7340)
+This is catalog webpage template
 ![Catalog Page](https://github.com/user-attachments/assets/41e7d33b-3c28-4427-9f55-77f94950084f)
+this is product details pop-up
 ![Details Pop-Up](https://github.com/user-attachments/assets/a8e72c10-4bdf-403d-8851-d8f7ba1fde71)
 
 
