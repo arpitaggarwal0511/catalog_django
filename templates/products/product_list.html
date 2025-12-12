@@ -2,33 +2,87 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Products (demo)</title>
+  <title>Products</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body { font-family: Arial, sans-serif; padding:16px; background:#fafafa; color:#111; }
+    h1 { margin:0 0 12px 0; }
+    .filters { margin-bottom:12px; }
+    input, select, button { padding:6px 8px; margin-right:6px; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap:10px; }
+    .card { background:#fff; border:1px solid #ddd; padding:8px; border-radius:6px; }
+    .card img { width:100%; height:120px; object-fit:cover; display:block; margin-bottom:8px; }
+    .card h3 { margin:0 0 6px 0; font-size:1rem; }
+    .card p { margin:0 0 6px 0; color:#444; font-size:0.95rem; }
+    #modal { display:none; position:fixed; left:0; top:0; right:0; bottom:0; background:rgba(0,0,0,0.45); align-items:center; justify-content:center; }
+    #modal-box { background:#fff; padding:12px; width:90%; max-width:600px; border-radius:6px; }
+    #modal-close { float:right; border:none; background:transparent; cursor:pointer; font-size:16px; }
+  </style>
 </head>
 <body>
   <h1>Products</h1>
-    <form method="get" style="margin-bottom:12px">
-  <input type="text" name="q" placeholder="search name/description" value="{{ request.GET.q|default:'' }}">
-  <select name="size">
-    <option value="">All sizes</option>
-    <option value="XS" {% if request.GET.size == 'XS' %}selected{% endif %}>XS</option>
-    <option value="S"  {% if request.GET.size == 'S' %}selected{% endif %}>S</option>
-    <option value="M"  {% if request.GET.size == 'M' %}selected{% endif %}>M</option>
-    <option value="L"  {% if request.GET.size == 'L' %}selected{% endif %}>L</option>
-    <option value="XL" {% if request.GET.size == 'XL' %}selected{% endif %}>XL</option>
-  </select>
-  <button type="submit">Apply</button>
-  <a href="{% url 'products:product_list' %}">Reset</a>
-</form>
 
-  <ul>
+  <!-- Filters -->
+  <form method="get" class="filters">
+    <input type="text" name="q" placeholder="search" value="{{ request.GET.q|default:'' }}">
+    <select name="size">
+      <option value="">All sizes</option>
+      <option value="XS" {% if request.GET.size == 'XS' %}selected{% endif %}>XS</option>
+      <option value="S"  {% if request.GET.size == 'S'  %}selected{% endif %}>S</option>
+      <option value="M"  {% if request.GET.size == 'M'  %}selected{% endif %}>M</option>
+      <option value="L"  {% if request.GET.size == 'L'  %}selected{% endif %}>L</option>
+      <option value="XL" {% if request.GET.size == 'XL' %}selected{% endif %}>XL</option>
+    </select>
+    <button type="submit">Apply</button>
+    <a href="{% url 'products:product_list' %}">Reset</a>
+  </form>
+
+  <!-- Cards -->
+  <div class="grid">
     {% for p in products %}
-      <li>{{ p.name }} — ₹{{ p.price }} — ⭐{{ p.rating }}</li>
+      <div class="card">
+        {% if p.image_url %}
+          <img src="{{ p.image_url }}" alt="{{ p.name }}">
+        {% endif %}
+        <h3>{{ p.name }}</h3>
+        <p>₹{{ p.price }} — ⭐{{ p.rating }} — {{ p.size }}</p>
+        <button class="detail-btn" data-id="{{ p.id }}">Details</button>
+      </div>
     {% empty %}
-      <li>No products yet.</li>
+      <div>No products found.</div>
     {% endfor %}
-  </ul>
+  </div>
 
-  <p><a href="/admin/">Open admin</a> to add products</p>
+  <!-- Modal -->
+  <div id="modal">
+    <div id="modal-box">
+      <button id="modal-close">Close</button>
+      <div id="modal-content" style="margin-top:8px"></div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('click', function (e) {
+      if (e.target && e.target.matches('.detail-btn')) {
+        var id = e.target.dataset.id;
+        fetch('/products/' + id + '/json/')
+          .then(function (r) { if (!r.ok) throw new Error('Network'); return r.json(); })
+          .then(function (data) {
+            var img = data.image_url ? '<img src="' + data.image_url + '" style="width:100%;height:200px;object-fit:cover;margin-bottom:8px;">' : '';
+            var html = '<h2 style="margin:0 0 8px 0;">' + (data.name || '') + '</h2>' +
+                       img +
+                       '<p>Price: ₹' + (data.price || '') + '</p>' +
+                       '<p>Size: ' + (data.size || '') + ' • ⭐' + (data.rating || '') + '</p>' +
+                       '<p style="margin-top:8px;">' + (data.description || '') + '</p>';
+            document.getElementById('modal-content').innerHTML = html;
+            document.getElementById('modal').style.display = 'flex';
+          })
+          .catch(function () { alert('Could not load details'); });
+      }
+      if (e.target && (e.target.id === 'modal-close' || e.target.id === 'modal')) {
+        document.getElementById('modal').style.display = 'none';
+      }
+    });
+  </script>
 </body>
 </html>
