@@ -7,16 +7,26 @@ python manage.py migrate --noinput
 echo "Collecting static files..."
 python manage.py collectstatic --noinput
 
+# Optional: create a superuser non-interactively if env vars are provided
 if [ -n "$DJANGO_SU_USERNAME" ] && [ -n "$DJANGO_SU_PASSWORD" ]; then
   echo "Ensuring superuser exists..."
-  python manage.py shell -c "from django.contrib.auth import get_user_model; \
-u='${DJANGO_SU_USERNAME}'; p='${DJANGO_SU_PASSWORD}'; e='${DJANGO_SU_EMAIL:-}'; \
-User=get_user_model(); \
-if not User.objects.filter(username=u).exists(): \
-    User.objects.create_superuser(u, e, p); \
-    print('Superuser created:', u); \
-else: \
-    print('Superuser already exists:', u)"
+  # Use heredoc to run multiple Python lines inside Django's manage.py shell
+  python manage.py shell <<'PY'
+import os
+from django.contrib.auth import get_user_model
+User = get_user_model()
+u = os.environ.get('DJANGO_SU_USERNAME')
+p = os.environ.get('DJANGO_SU_PASSWORD')
+e = os.environ.get('DJANGO_SU_EMAIL', '')
+if u:
+    if not User.objects.filter(username=u).exists():
+        User.objects.create_superuser(u, e, p)
+        print("Superuser created:", u)
+    else:
+        print("Superuser already exists:", u)
+else:
+    print("No DJANGO_SU_USERNAME provided; skipping creation.")
+PY
 else
   echo "Superuser creation skipped (no DJANGO_SU_USERNAME/DJANGO_SU_PASSWORD)."
 fi
