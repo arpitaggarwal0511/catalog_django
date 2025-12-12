@@ -43,7 +43,7 @@ The goal is to showcase backend understanding in a simple and clean way.
 
 
 ## 🌐 Live Demo
-[live](https://catalog-django-3.onrender.com/)  
+[live](https://catalog-django-3.onrender.com/products/)  
 
 ---
 
