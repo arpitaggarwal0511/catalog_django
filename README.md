@@ -17,15 +17,15 @@ The goal is to showcase backend understanding in a simple and clean way.
 
 ## Features
 
-### ✅ Product List Page
+###  Product List Page
 - Shows all products from the database  
 - Displays name, price, rating, size and image  
 - Presented in simple card layout  
 
-### ✅ Search
+###  Search
 - Search products by name or description  
 
-### ✅ Filters
+###  Filters
 - Filter by:
   - Size  
   - Min/Max Price  
@@ -33,23 +33,23 @@ The goal is to showcase backend understanding in a simple and clean way.
   
   
 
-### ✅ Product Detail Popup
+###  Product Detail Popup
 - A “Details” button fetches product info from a JSON endpoint  
 - Data is shown inside a modal popup  
 
-### ✅ Admin Panel
+###  Admin Panel
 - Django admin is used to create and manage products  
 - Admin login can be created from environment variables in deployment  
 
 ---
 
 
-## 🌐 Live Demo
+##  Live Demo
 [live](https://catalog-django-3.onrender.com/products/)  
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 catalog_back/        → Main Django project (settings, URLs)
@@ -62,7 +62,7 @@ manage.py            → Django command utility
 
 ---
 
-## 🚀 Installation (Local Development)
+##  Installation (Local Development)
 
 ### 1. Clone the repository
 ```bash
@@ -163,7 +163,7 @@ This JSON is used by the “Details” popup on the product listing page.
 ---
 
 
-## 🖼 Screenshots
+##  Screenshots
 
 
 This is admin page
@@ -177,29 +177,10 @@ This is catalog webpage template
 this is product details pop-up
 ![Details Pop-Up](https://github.com/user-attachments/assets/a8e72c10-4bdf-403d-8851-d8f7ba1fde71)
 
-
-
----
-
-
-
-## 📘 Why This Project Exists
-
-This project was created as part of an internship assignment to learn:
-
-- Django backend basics  
-- Project structure and app creation  
-- Rendering HTML with templates  
-- CRUD model understanding  
-- Filtering, searching, modal display  
-- Deployment workflow  
-
-The goal is to keep the project **simple, readable, and easy to explain in a viva**.
-
 ---
 
 ## 📄 License
-This project is for educational/demo purposes.  
+This project is for demo purposes.  
 You may use and modify it freely.
 
 
